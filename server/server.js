@@ -40,7 +40,6 @@ app.get('/todos', (req, res) => {
 // setup GET #show route
 app.get('/todos/:id', (req, res) => {
   const id = req.params.id
-  const body = _.pick(req.body, ['text', 'completed'])
 
   if (!ObjectID.isValid(id)) {
     return res.status(404).send();
@@ -77,6 +76,7 @@ app.delete('/todos/:id', (req, res) => {
 // setup PATCH #update route
 app.patch('/todos/:id', (req, res) => {
   const id = req.params.id;
+  const body = _.pick(req.body, ['text', 'completed']);
 
   if (!ObjectID.isValid(id)) {
     return res.status(404).send();

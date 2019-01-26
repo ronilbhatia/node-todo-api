@@ -24,7 +24,7 @@ app.post('/todos', (req, res) => {
     res.send(doc);
   }, err => {
     res.status(400).send(err);
-  })
+  });
 });
 
 // setup GET #index route
@@ -36,8 +36,8 @@ app.get('/todos', (req, res) => {
     });
   }, err => {
     res.status(400).send(err)
-  })
-})
+  });
+});
 
 // setup GET #show route
 app.get('/todos/:id', (req, res) => {
@@ -54,7 +54,7 @@ app.get('/todos/:id', (req, res) => {
     res.send({ todo });
   }, err => {
     res.status(400).send(err);
-  })
+  });
 });
 
 // setup DELETE #destroy route
@@ -72,8 +72,8 @@ app.delete('/todos/:id', (req, res) => {
     res.send({ todo });
   }, err => {
     res.status(400).send(err);
-  })
-})
+  });
+});
 
 // setup PATCH #update route
 app.patch('/todos/:id', (req, res) => {
@@ -98,8 +98,20 @@ app.patch('/todos/:id', (req, res) => {
     res.send({ todo })
   }, err => {
     res.status(400).send(err);
-  })
-})
+  });
+});
+
+// setup User POST #create route
+app.post('/users', (req, res) => {
+  const body = _.pick(req.body, ['email', 'password']);
+  const user = new User(body);
+
+  user.save().then(newUser => {
+    res.send({ newUser });
+  }, err => {
+    res.status(422).send(err)
+  });
+});
 
 app.listen(port, () => {
   console.log(`Started on Port ${port}`);

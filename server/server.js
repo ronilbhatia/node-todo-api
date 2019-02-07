@@ -15,6 +15,10 @@ const port = process.env.PORT || 3000
 
 app.use(bodyParser.json());
 
+/*
+TODOS ROUTES
+*/
+
 // setup POST #create route  
 app.post('/todos', (req, res) => {
   const todo = new Todo({
@@ -101,6 +105,10 @@ app.patch('/todos/:id', (req, res) => {
     res.status(400).send(err);
   });
 });
+
+/*
+USERS ROUTES
+*/
 
 // setup User POST #create route
 app.post('/users', (req, res) => {

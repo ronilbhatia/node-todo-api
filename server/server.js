@@ -130,21 +130,35 @@ app.get('/users/me', authenticate, (req, res) => {
 });
 
 
-app.listen(port, () => {
-  console.log(`Started on Port ${port}`);
-});
 
 // setup User POST #login route
 app.post('/users/login', (req, res) => {
   const body = _.pick(req.body, ['email', 'password']);
-
+  
   User.findByCredentials(body.email, body.password).then(user => {
     return user.generateAuthToken().then(token => {
       res.header('x-auth', token).send(user.toJSON());
     })
   }).catch(e => {
     res.status(400).send();
-  })
-})
+  });
+});
+
+// setup User DELETE #destroy route
+app.delete('/users/me/token', authenticate, (req, res) => {
+  const user = req.user;
+  const token = req.token;
+
+  user.removeToken(token).then(() => {
+    res.status(200).send();
+  }, () => {
+    res.status(400).send();
+  });
+});
+
+// Fire up server
+app.listen(port, () => {
+  console.log(`Started on Port ${port}`);
+});
 
 module.exports = app;

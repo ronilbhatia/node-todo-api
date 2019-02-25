@@ -32,14 +32,14 @@ const UserSchema = new mongoose.Schema({
       required: true
     }
   }]
-})
+});
 
 UserSchema.methods.toJSON = function() {
   const user = this;
   const userObject = user.toObject();
 
   return _.pick(userObject, ['_id', 'email']);
-}
+};
 
 UserSchema.methods.generateAuthToken = function() {
   const user = this;
@@ -50,6 +50,16 @@ UserSchema.methods.generateAuthToken = function() {
 
   return user.save().then(() => {
     return token;
+  });
+};
+
+UserSchema.methods.removeToken = function(token) {
+  const user = this;
+
+  return user.update({
+    $pull: {
+      tokens: { token }
+    }
   });
 }
 
